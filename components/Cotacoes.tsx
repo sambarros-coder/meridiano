@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-type Item = { chave: string; rotulo: string; valor: string; variacao?: number };
+type Item = { chave: string; rotulo: string; valor: string; variacao?: number; ouro?: boolean };
 
 const fmt = (n: number, d: number) =>
   n.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -16,8 +16,8 @@ async function sgs(codigo: number): Promise<number> {
 }
 
 const BASE: Item[] = [
-  { chave: "selic", rotulo: "SELIC (META)", valor: "—" },
-  { chave: "cdi", rotulo: "CDI", valor: "—" },
+  { chave: "selic", rotulo: "SELIC (META)", valor: "—", ouro: true },
+  { chave: "cdi", rotulo: "CDI", valor: "—", ouro: true },
   { chave: "ipca", rotulo: "IPCA 12M", valor: "—" },
   { chave: "usd", rotulo: "DÓLAR", valor: "—" },
   { chave: "eur", rotulo: "EURO", valor: "—" },
@@ -62,7 +62,7 @@ export default function Cotacoes() {
       {itens.map((i) => (
         <span className="mq-i" key={i.chave + sufixo}>
           <span className="mq-l">{i.rotulo}</span>
-          <span className="mq-v">{i.valor}</span>
+          <span className={i.ouro ? "mq-v mq-g" : "mq-v"}>{i.valor}</span>
           {i.variacao !== undefined && !Number.isNaN(i.variacao) && (
             <span className={i.variacao >= 0 ? "mq-u" : "mq-d"}>
               {i.variacao >= 0 ? "▲" : "▼"} {fmt(Math.abs(i.variacao), 2)}%
